@@ -14,9 +14,9 @@ define(['N/task'],(task) => {
             log.debug('data', data)
             var mrTask = task.create({taskType: task.TaskType.MAP_REDUCE});
             //Replace Script ID
-            mrTask.scriptId = 'customscript_add_files_to_file_cabinet';
+            mrTask.scriptId = '<SCRIPTID>';
             //Replace Deployment Id
-            mrTask.deploymentId = 'customdeploy1';
+            mrTask.deploymentId = '<DEPLOYMENTID>';
             //Create param in Map/Reduce Script Record
             mrTask.params = {custscript_script_data: data};
             mrTask.submit();

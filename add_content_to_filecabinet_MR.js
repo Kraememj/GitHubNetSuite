@@ -25,14 +25,14 @@ define([
     function getInputData(context) {
       log.audit({ title: "Start ..." });
   
-      // TODO
+
+      //get parameter name value will be equal to the parameter added on Map/Reduce Script record
   
       let data = JSON.parse(
         runtime
           .getCurrentScript()
           .getParameter({ name: "custscript_script_data" })
       );
-      log.debug("params", typeof data);
       return data;
     }
   
@@ -162,7 +162,7 @@ define([
           'xlt':{
               encoded: false,
               type: `${file.Type.EXCEL}`
-          },
+          }
       
   
       }
@@ -190,15 +190,11 @@ define([
     const getFileInfo = (value, modifyType) => {
       let fileInfo;
       if (modifyType.includes("removed")) {
-        log.debug("in removed");
-        log.debug("value", value.path);
         let path = value.path.split("/");
         if (!path[path.length - 1]) path.pop();
         let fileName = path[path.length - 1];
         path = value.path;
         path = value.path.replace(fileName, "");
-        log.debug("fileName", fileName);
-        log.debug("path", path);
         path.replace(fileName, "");
         path = path.split("/");
         if (!path[path.length - 1]) path.pop();
