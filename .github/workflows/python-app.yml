@@ -1,0 +1,70 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python application
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+      
+      build:
+        runs-on: ubuntu-latest
+        steps:
+          - name: checkout repo content
+            uses: actions/checkout@v2
+          - name: setup python
+            uses: actions/setup-python@v2
+            with:
+              python-version: 3.7
+          - name: install python packages
+            run: |
+              python -m pip install --upgrade pip
+              pip install -r versioncontrol/requirements.txt
+          - uses: actions/checkout@v2.1.0
+          - uses: jitterbit/get-changed-files@v1
+            id: abc
+          - name: Printing
+            run: |
+                echo "All:"
+                echo "${{ steps.abc.outputs.all }}"
+                echo "Added:"
+                echo "${{ steps.abc.outputs.added }}"
+                echo "Removed:"
+                echo "${{ steps.abc.outputs.removed }}"
+                echo "Renamed:"
+                echo "${{ steps.abc.outputs.renamed }}"
+                echo "Modified:"
+                echo "${{ steps.abc.outputs.modified }}"
+                echo "Added+Modified:"
+                echo "${{ steps.abc.outputs.added_modified }}"
+          - name: show main.py file content
+            run: cat versioncontrol/main.py  
+          - uses: actions/checkout@v2.1.0
+          - uses: jitterbit/get-changed-files@v1  
+          - name: execute py script
+            env:
+              #Create these in NetSuite. Add to Github. Settings > Secrets > Actions.
+              #Access with secrets.<secretsname>
+              CONSUMER_KEY: ${{  secrets.CONSUMER_KEY }}
+              CONSUMER_SECRET: ${{  secrets.CONSUMER_SECRET }}
+              TOKEN_KEY: ${{  secrets.TOKEN_KEY }}
+              TOKEN_SECRET: ${{  secrets.TOKEN_SECRET }}
+              #Create GitHub token. ACCOUNT SETTINGS > Developer settings > Personal Access Token
+              #Add this token to Github Secrets as done above
+              AUTH_GITHUB: ${{  secrets.AUTH_TOKEN_GITHUB }}
+              #These come from jitterbit/get-changed-files@v1 
+              ADDED_SCRIPTS: ${{  steps.abc.outputs.added }}
+              MODIFIED_SCRIPTS: ${{ steps.abc.outputs.modified }}
+              REMOVED_SCRIPTS: ${{  steps.abc.outputs.removed }}
+              RENAMED_SCRIPTS: ${{  steps.abc.outputs.renamed }}
+              ADDED_MODIFIED_SCRIPTS: ${{   steps.abc.outputs.added_modified }}
+              #Misc github info
+              GITHUB_OWNER: ${{ github.repository_owner }}
+              GITHUB_REPO: ${{ github.repository }}
+              GITHUB_REPO_URL: ${{ github.repositoryUrl }}
+            #run python scripts  
+            run: |
+              python versioncontrol/main.py
+              
