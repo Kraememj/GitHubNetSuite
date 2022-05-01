@@ -8,15 +8,9 @@ define([
     "N/log",
   ], (runtime, search, record, encode, file, util, log) => {
     /**
-           * Module Description...
-           *
-           * @type {Object} module-name
-           *
            * @copyright 2022
-           * @author Matt Kraemer <>
-           *
+           * @author Matt Kraemer
            * @NApiVersion 2.1
-  
            * @NScriptType MapReduceScript
            */
     var exports = {};
@@ -46,6 +40,7 @@ define([
           let folderId = createAndGetFolder(fileInfo);
           if (!folderId) return;
           let createdFile = createFiles(fileInfo, folderId);
+          log.debug('createdFileId', createdFile)
         }
        
       } catch (e) {
@@ -55,7 +50,6 @@ define([
     }
   
     const createFiles = (fileInfo, folderId) => {
-      let fileExists;
       log.debug("folderId", folderId);
       var folderSearchObj = search.create({
         type: "folder",
