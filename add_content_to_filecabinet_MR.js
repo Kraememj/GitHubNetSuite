@@ -183,7 +183,7 @@ define([
   
     const getFileInfo = (value, modifyType) => {
       let fileInfo;
-      if (modifyType.includes("removed")) {
+      if (modifyType.includes("removed") && !value.content) {
         let path = value.path.split("/");
         if (!path[path.length - 1]) path.pop();
         let fileName = path[path.length - 1];
